@@ -13,6 +13,15 @@
   roles:
     - role: k3s/master
 
+# The point of this "duplication" is to wait for the first master; the
+# master/secondary difference is accounted for in the `set_fact` blocks
+# in master/tasks/main.yml; also, converge them serially
+- hosts: secondary
+  become: yes
+  roles:
+    - role: k3s/master
+  serial: 1
+
 - hosts: node
   become: yes
   roles:

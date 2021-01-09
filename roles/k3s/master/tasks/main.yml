@@ -1,5 +1,23 @@
 ---
 
+# Experimental HA mode for master (https://rancher.com/docs/k3s/latest/en/installation/ha-embedded/)
+- block:
+    - set_fact:
+        extra_server_args: --cluster-init
+  when:
+    - k3s_major is version(embedded_etcd_minver, '>=')
+    - inventory_hostname == groups['master'][0]
+    - groups['secondary'] | default([]) | length > 1
+
+# Experimental HA mode for secondaries (need 2 or more)
+- block:
+    - set_fact:
+        extra_server_args: --server {{ master_url }}
+  when:
+    - k3s_major is version(embedded_etcd_minver, '>=')
+    - inventory_hostname in groups['secondary']
+    - groups['secondary'] | default([]) | length > 1
+
 - name: Copy K3s service file
   register: k3s_service
   template:

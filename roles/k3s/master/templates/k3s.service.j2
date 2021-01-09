@@ -8,6 +8,7 @@ Type=notify
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
 ExecStart=/usr/local/bin/k3s server {{ extra_server_args | default("") }}
+Environment=K3S_TOKEN={{ token | default(omit) }}
 KillMode=process
 Delegate=yes
 # Having non-zero Limit*s causes performance problems due to accounting overhead

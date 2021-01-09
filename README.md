@@ -35,6 +35,8 @@ Second, edit `inventory/my-cluster/hosts.ini` to match the system information ga
 [master]
 192.16.35.12
 
+[secondary]
+
 [node]
 192.16.35.[10:11]
 
@@ -44,6 +46,8 @@ node
 ```
 
 If needed, you can also edit `inventory/my-cluster/group_vars/all.yml` to match your environment.
+
+If `secondary` is populated with two or more hosts, [high availability with embedded etcd](https://rancher.com/docs/k3s/latest/en/installation/ha-embedded/) will be configured between the master and secondaries.
 
 Start provisioning of the cluster using the following command:
 
